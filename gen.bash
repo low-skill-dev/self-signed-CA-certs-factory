@@ -32,24 +32,21 @@ echo "keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipher
 mkdir "gen"
 cd "gen"
 
-for server in "${servers[@]}"; do
+for server in "${servers[@]}"; 
+do
 	# gen child keys
 	openssl ecparam -name secp384r1 -genkey -noout -out $server.key
 
 	# gen child reqs
 	openssl req -new -key $server.key -out $server.csr -subj $subj
 
-	#echo "subjectAltName = @alt_names" >> $server.v3.ext;
-
 	# gen child certs
-	# extfile is needed ONLY for use in browser
-	openssl x509 -req -in $server.csr -CA ../$caName.crt -CAkey ../$caName.key -CAcreateserial -out $server.crt -days $days -extfile ../rules.v3.ext 
-	# -config openssl-ca.cnf
+	openssl x509 -req -in $server.csr -CA ../$caName.crt -CAkey ../$caName.key -CAcreateserial -out $server.crt -days $days -extfile ../rules.v3.ext
 
-	rm $server.csr;
+	rm $server.csr
 done
 
-cd ..;
+cd ..
 
-rm $caName.srl;
-rm rules.v3.ext;
+rm $caName.srl
+rm rules.v3.ext
