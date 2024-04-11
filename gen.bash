@@ -35,7 +35,7 @@ cd "gen"
 for server in "${servers[@]}"; 
 do
 	# gen child keys
-	openssl ecparam -name secp384r1 -genkey -noout -out $server.key
+	openssl ecparam -name ${curve} -genkey -noout -out $server.key
 
 	# gen child reqs
 	openssl req -new -key $server.key -out $server.csr -subj $subj
